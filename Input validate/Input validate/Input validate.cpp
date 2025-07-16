@@ -1,55 +1,59 @@
-﻿#include <iostream>
+#include <iostream>
 #include "clsInputValidate.h"
 #include "clsDate.h"
 
 using namespace std;
 
 int main() {
+    int age = clsInputValidate::readNumberByUser<int>(
+        "Enter your age: ",
+        "Invalid input. Please enter a valid number: "
+    );
+    cout << "Your age is: " << age << "\n\n";
 
-    // Test: readNumberInteger
-    int iNum = clsInputValidate::readNumberInteger("Enter an integer: ", "Invalid input! Try again: ");
-    cout << "You entered: " << iNum << "\n\n";
+    float price = clsInputValidate::readNumberByUserIncludeTab<float>(
+        2,
+        "Enter product price: ",
+        "Invalid input. Try again: "
+    );
+    cout << "Price is: " << price << "\n\n";
 
-    // Test: readNumberIntegerBetween
-    int iRange = clsInputValidate::readNumberIntegerBetween(1, 10, "Enter an integer between 1 and 10: ");
-    cout << "You entered valid range: " << iRange << "\n\n";
+    int rangeValue = clsInputValidate::readNumberBetween<int>(
+        10, 20,
+        "Enter a number between 10 and 20: "
+    );
+    cout << "Range value: " << rangeValue << "\n\n";
 
-    // Test: readNumberDouble
-    double dNum = clsInputValidate::readNumberDouble("Enter a decimal number: ", "Invalid input! Try again: ");
-    cout << "You entered: " << dNum << "\n\n";
+    double tabRange = clsInputValidate::readNumberBetweenIncludeTabs<double>(
+        1, 1.5, 3.5,
+        "Enter a value between 1.5 and 3.5: "
+    );
+    cout << "Value: " << tabRange << "\n\n";
 
-    // Test: readNumberDoubleBetween
-    double dRange = clsInputValidate::readNumberDoubleBetween(5.5, 15.5, "Enter a number between 5.5 and 15.5: ");
-    cout << "You entered valid range: " << dRange << "\n\n";
+    string name = clsInputValidate::readString("Enter your name: ");
+    cout << "Name: " << name << "\n\n";
 
-    // Test: isNumberBetween (int and double)
-    cout << "Test isNumberBetween(5, 1, 10): " << (clsInputValidate::isNumberBetween(5, 1, 10) ? " Yes" : " No") << "\n";
-    cout << "Test isNumberBetween(20.5, 10.0, 30.0): " << (clsInputValidate::isNumberBetween(20.5, 10.0, 30.0) ? " Yes" : " No") << "\n\n";
+    string city = clsInputValidate::readStringIncludeTab(2, "Enter your city: ");
+    cout << "City: " << city << "\n\n";
 
-    // Test: readCharacter
-    char ch = clsInputValidate::readCharacter("Enter a character: ");
-    cout << "You entered: " << ch << "\n\n";
+    char answer = clsInputValidate::answerYesOrNo("Continue [Y/N]? ");
+    cout << "Answer: " << answer << "\n\n";
 
-    // Test: answerYesOrNo
-    char yn = clsInputValidate::answerYesOrNo("Do you want to continue? [Y/N]: ");
-    cout << "You answered: " << yn << "\n\n";
+    char tabAnswer = clsInputValidate::answerYesOrNoIncludeTab(1, "Continue again [Y/N]? ");
+    cout << "Answer: " << tabAnswer << "\n\n";
 
-    // Test: isDateBetween
-    clsDate date1(1, 1, 2020);
-    clsDate date2(1, 1, 2025);
-    clsDate checkDate(10, 10, 2023);
+    char gender = clsInputValidate::readCharacter("Enter gender (M/F): ");
+    cout << "Gender: " << gender << "\n\n";
 
-    bool isBetween = clsInputValidate::isDateBetween(checkDate, date1, date2);
-    cout << "Test date between 01/01/2020 and 01/01/2025 → 10/10/2023: " << (isBetween ? "Yes" : "No") << "\n\n";
+    char level = clsInputValidate::readCharacterIncludeTab(2, "Enter level (A/B/C): ");
+    cout << "Level: " << level << "\n\n";
 
-    // Test: validationDate
-    clsDate dValid(30, 2, 2024); // Invalid: Feb 30
-    bool valid = clsInputValidate::validationDate(dValid);
-    cout << "Test validationDate(30/02/2024): " << (valid ? "Valid" : "Invalid") << "\n";
+    clsDate d1(1, 1, 2020), d2(1, 1, 2030), checkDate(1, 1, 2025);
+    bool isBetween = clsInputValidate::isDateBetween(checkDate, d1, d2);
+    cout << "Date is between: " << (isBetween ? "Yes" : "No") << "\n\n";
 
-    clsDate dValid2(28, 2, 2024); // Valid
-    bool valid2 = clsInputValidate::validationDate(dValid2);
-    cout << "Test validationDate(28/02/2024): " << (valid2 ? "Valid" : "Invalid") << "\n";
+    bool validDate = clsInputValidate::validationDate(checkDate);
+    cout << "Date is valid: " << (validDate ? "Yes" : "No") << "\n\n";
 
     return 0;
 }
