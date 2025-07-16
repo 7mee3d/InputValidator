@@ -30,19 +30,15 @@ private:
 
 public:
 
-	static inline bool isNumberBetween(int const kNUMBER_TO_CHEAK_BETWEEN, int const kNUMBER_ONE, int const kNUMBER_TWO) {
+	template <typename T >
+
+	static inline bool isNumberBetween(T const kNUMBER_TO_CHEAK_BETWEEN, T const kNUMBER_ONE, T const kNUMBER_TWO) {
 
 		return ((kNUMBER_TO_CHEAK_BETWEEN >= kNUMBER_ONE)
 			&& (kNUMBER_TO_CHEAK_BETWEEN <= kNUMBER_TWO));
 
 	};
 
-	static inline bool isNumberBetween(double const kNUMBER_TO_CHEAK_BETWEEN, double const kNUMBER_ONE, double const kNUMBER_TWO) {
-
-		return ((kNUMBER_TO_CHEAK_BETWEEN >= kNUMBER_ONE)
-			&& (kNUMBER_TO_CHEAK_BETWEEN <= kNUMBER_TWO));
-
-	};
 
 	static inline bool isDateBetween(clsDate kDATE_TO_NEED_CHEAK, clsDate kDATE_ONE, clsDate kDATE_TWO) {
 		return (
@@ -56,12 +52,14 @@ public:
 			);
 	}
 
-	static inline int readNumberInteger(const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING) {
+	template < typename T >
 
-		int numberInteger{ _kZERO };
+	static inline T readNumberByUser(const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING) {
+
+		T number{ _kZERO };
 
 		cout << kMESSAGE_ORGINAL;
-		cin >> numberInteger;
+		cin >> number;
 
 		cout << endl;
 		while (cin.fail()) {
@@ -69,18 +67,19 @@ public:
 			cin.clear();
 			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			cout << kMESSAGE_WARNING;
-			cin >> numberInteger;
+			cin >> number;
 		};
 
-		return numberInteger;
+		return number;
 	};
 
-	static inline int readNumberIntegerIncludeTab(const unsigned short int kNUMBER_OF_TAB, const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING) {
+	template < typename T >
+	static inline T readNumberByUserIncludeTab( unsigned short int kNUMBER_OF_TAB, const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING) {
 
-		int numberInteger{};
+		T number{};
 
 		cout << clsUtility::createTabs(kNUMBER_OF_TAB) << kMESSAGE_ORGINAL;
-		cin >> numberInteger;
+		cin >> number;
 
 		cout << endl;
 		while (cin.fail()) {
@@ -88,109 +87,44 @@ public:
 			cin.clear();
 			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 			cout << clsUtility::createTabs(kNUMBER_OF_TAB) << kMESSAGE_WARNING;
-			cin >> numberInteger;
+			cin >> number;
 		};
 
-		return numberInteger;
+		return number;
 	};
 
-	static inline int readNumberIntegerBetween(int const kFRAM_NUMBER, const int kTO_NUMBER, const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING = "Number is not within range, Enter again:\n") {
+	template < typename T >
 
-		int numberInteger{ readNumberInteger(kMESSAGE_ORGINAL , kMESSAGE_WARNING) };
+	static inline T readNumberBetween(T const kFRAM_NUMBER, const T kTO_NUMBER, const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING = "Number is not within range, Enter again:\n") {
+
+		T number =  readNumberByUser <T>(kMESSAGE_ORGINAL , kMESSAGE_WARNING) ;
 
 		cout << endl;
-		while (!isNumberBetween(numberInteger, kFRAM_NUMBER, kTO_NUMBER)) {
+		while (!isNumberBetween(number, kFRAM_NUMBER, kTO_NUMBER)) {
 
 			cout << kMESSAGE_WARNING;
-			numberInteger = { readNumberInteger(kMESSAGE_ORGINAL , kMESSAGE_WARNING) };
+			number =  readNumberByUser<T>(kMESSAGE_ORGINAL , kMESSAGE_WARNING) ;
 
 		}
 
-		return numberInteger;
+		return number;
 	};
 
+	template < typename T >
 
-	static inline int readNumberIntegerBetweenIncludeTabs(const unsigned short int kNUMBER_TAB, int const kFRAM_NUMBER, const int kTO_NUMBER, const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING = "Number is not within range, Enter again:\n") {
+	static inline T readNumberBetweenIncludeTabs(const unsigned short int kNUMBER_TAB, T const kFRAM_NUMBER, const T kTO_NUMBER, const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING = "Number is not within range, Enter again:\n") {
 
-		int numberInteger{ readNumberIntegerIncludeTab(kNUMBER_TAB , kMESSAGE_ORGINAL , kMESSAGE_WARNING) };
+		T number = readNumberByUserIncludeTab <T> ( kNUMBER_TAB , kMESSAGE_ORGINAL , kMESSAGE_WARNING) ;
 		cout << endl;
-		while (!isNumberBetween(numberInteger, kFRAM_NUMBER, kTO_NUMBER)) {
+		while (!isNumberBetween(number, kFRAM_NUMBER, kTO_NUMBER)) {
 
-			numberInteger = { readNumberIntegerIncludeTab(kNUMBER_TAB , kMESSAGE_ORGINAL , kMESSAGE_WARNING) };
+			number =  readNumberByUserIncludeTab<T>(kNUMBER_TAB , kMESSAGE_ORGINAL , kMESSAGE_WARNING) ;
 
 		}
 
-		return numberInteger;
+		return number;
 	};
 
-
-	static inline double readNumberDouble(const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING) {
-
-		double numberDouble{};
-
-		cout << kMESSAGE_ORGINAL;
-		cin >> numberDouble;
-
-		cout << endl;			// If you need Forcing The User input Data type [double] add this condition
-		while ((cin.fail()) /* || (floor(numberDouble) == numberDouble)*/) {
-
-			cin.clear();
-			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			cout << kMESSAGE_WARNING;
-			cin >> numberDouble;
-		};
-
-		return numberDouble;
-	};
-
-	static inline double readNumberDoubleIncludeTab(const unsigned short int kNUMBER_OF_TAB, const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING) {
-
-		double numberDouble{};
-
-		cout << clsUtility::createTabs(kNUMBER_OF_TAB) << kMESSAGE_ORGINAL;
-		cin >> numberDouble;
-
-		cout << endl;
-		while ((cin.fail()) /* || (floor(numberDouble) == numberDouble) */) {
-
-			cin.clear();
-			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			cout << clsUtility::createTabs(kNUMBER_OF_TAB) << kMESSAGE_WARNING;
-			cin >> numberDouble;
-		};
-
-		return numberDouble;
-	};
-
-	static inline double readNumberDoubleBetween(double const kFRAM_NUMBER, const double kTO_NUMBER, const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING = "Number is not within range, Enter again:\n") {
-
-		double numberDouble{ readNumberDouble(kMESSAGE_ORGINAL , kMESSAGE_WARNING) };
-		cout << endl;
-
-		while (!isNumberBetween(numberDouble, kFRAM_NUMBER, kTO_NUMBER)) {
-
-			cout << kMESSAGE_WARNING;
-			numberDouble = { readNumberDouble(kMESSAGE_ORGINAL , kMESSAGE_WARNING) };
-
-		}
-
-		return numberDouble;
-	};
-
-
-	static inline double readNumberDoubleBetweenIncludeTab(const unsigned short int kNUMBER_TAB, double const kFRAM_NUMBER, const double kTO_NUMBER, const string kMESSAGE_ORGINAL, const string kMESSAGE_WARNING = "Number is not within range, Enter again:\n") {
-
-		double numberDouble{ readNumberDoubleIncludeTab(kNUMBER_TAB, kMESSAGE_ORGINAL , kMESSAGE_WARNING) };
-		cout << endl;
-
-		while (!isNumberBetween(numberDouble, kFRAM_NUMBER, kTO_NUMBER)) {
-
-			numberDouble = { readNumberDoubleIncludeTab(kNUMBER_TAB , kMESSAGE_ORGINAL , kMESSAGE_WARNING) };
-
-		}
-
-		return numberDouble;
-	};
 
 
 	static inline string readString(string const kMESSAGE) {
@@ -240,7 +174,22 @@ public:
 		return answer;
 
 	};
+	static inline char answerYesOrNoIncludeTab(unsigned short int const kNUMBER_TAB, string const kMESSAGE_PROMT = "", string const kMESSAGE_WORNING = "Please , Enter of the [Y/N] Only : ") {
 
+		char answer{ ' ' };
+
+		cout << clsUtility::createTabs(kNUMBER_TAB) << kMESSAGE_PROMT;
+		cin >> answer;
+		cout << endl;
+
+		while (clsString::convertionUpperCharToLower(answer) != 'y' && clsString::convertionUpperCharToLower(answer) != 'n') {
+			cout << clsUtility::createTabs(kNUMBER_TAB) << kMESSAGE_WORNING;
+			cin >> answer;
+		};
+
+		return answer;
+
+	};
 	static inline char readCharacter(string const kMESSAGE_PROMT = "", string const kMESSAGE_WORNING = "Please , Enter of the Character : ") {
 
 		string inputString{ "" };
